@@ -1,17 +1,18 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import Character from './Character'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Character from './Character';
 
-const urlPlanets = 'http://localhost:9009/api/planets'
-const urlPeople = 'http://localhost:9009/api/people'
+const urlPlanets = 'http://localhost:9009/api/planets';
+const urlPeople = 'http://localhost:9009/api/people';
 
- export default function App() {
+function App() {
 const [characters, setCharacters] = useState([])
 const [currentCharacterId, setCurrentCharacterId] = useState(null)
+const [world, setWorld] = useState(null)
+
 
 const showPlanet = id => {
-  setCurrentCharacterId(id)
+  setWorld(id)
 }
 const hidePlanet = () => {
   setCurrentCharacterId(null)
@@ -20,15 +21,27 @@ const hidePlanet = () => {
 useEffect(() => {
 
     axios.get(urlPeople)
-    .then(res => {
+    .then((res) => {
       setCharacters(res.data);
-      console.log(res.data)
+      console.log(res.data);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err.message)
     })
-  }
-, [])
+  }, [])
+
+useEffect(() => {
+if (currentCharacterId !== null) {
+  //axios.get(`${urlPlanets}/${currentCharacterId}`)
+  axios.get(urlPlanets)
+  .then((res) => {
+    setWorld(res.data);
+    console.log(res.data);
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+}}, [currentCharacterId]);
 
 //if (!data) return <p>Fetching data...</p>
 
@@ -39,24 +52,22 @@ useEffect(() => {
       <h2>Star Wars Characters</h2>
       <p>See the README of the project for instructions on completing this challenge</p>
       <div>
-    {characters.map(character => (
+    {characters.map((character) => (
       <div className="character-card" key={character.id}>
         <div className="character-name">
-          <h3>{character.name}</h3>
+          <h3 onClick= {() => showPlanet(character.id)}>{character.name}</h3>
           {/* Render other character information here if needed */}
         </div>
       </div>
     ))}
-  </div>
-
-      
+  </div>      
       {/* ❗ Map over the data in state, rendering a Character at each iteration */}
     </div>
   )
 }
 
 
-//export default App
+export default App
 
 // ❗ DO NOT CHANGE THE CODE  BELOW
 if (typeof module !== 'undefined' && module.exports) module.exports = App
