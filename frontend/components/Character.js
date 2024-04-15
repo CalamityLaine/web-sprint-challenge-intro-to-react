@@ -12,6 +12,7 @@ function Character({character, showPlanet}) { // ❗ Add the props
  // const {world, setWorld} = useState(null)
  const [showPlanetInfo, setShowPlanetInfo] = useState(false)
 
+
  const togglePlanet = () => {
   setShowPlanetInfo(!showPlanetInfo);
  };
@@ -19,13 +20,16 @@ function Character({character, showPlanet}) { // ❗ Add the props
  return (
   <div className='character-card' onClick={togglePlanet}>
     <div className='character-name'>
-      <h3 onClick={() => showPlanet(character.id)}>{character.name}</h3>
+      <h3 onClick={() => showPlanet(character.homeworld)}>{character.homeworld}</h3>
     </div>
+    <p>
     {showPlanetInfo && (
       <span className='character-planet'>
-        <p>Planet: {character.world}</p>
+        <p>Planet: {character.homeworld}</p>
       </span>
-    )}
+)}
+</p>
+  
   </div>
 );
 }
