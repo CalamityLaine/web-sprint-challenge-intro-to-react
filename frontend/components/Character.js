@@ -1,37 +1,28 @@
-import React, {useState} from 'react';
-import axios  from 'axios';
-import App from './App';
+import React, { useState } from 'react';
 
+function Character({ character, planets }) {
+  const [showPlanetInfo, setShowPlanetInfo] = useState(false);
 
-//const urlPlanets = 'http://localhost:9009/api/planets'
+  const togglePlanet = () => {
+    setShowPlanetInfo(!showPlanetInfo);
+  };
 
-function Character({character, showPlanet}) { // ❗ Add the props
-  // ❗ Create a state to hold whether the homeworld is rendering or not
-  // ❗ Create a "toggle" click handler to show or remove the homeworld
- // const {characterId, hidePlanet} = props
- // const {world, setWorld} = useState(null)
- const [showPlanetInfo, setShowPlanetInfo] = useState(false)
+  const planet = planets.find((planet) => planet.id === character.homeworld);
 
+  console.log(character.name)
+  console.log(planet.name)
 
- const togglePlanet = () => {
-  setShowPlanetInfo(!showPlanetInfo);
- };
-  
- return (
-  <div className='character-card' onClick={togglePlanet}>
-    <div className='character-name'>
-      <h3 onClick={() => showPlanet(character.homeworld)}>{character.homeworld}</h3>
+  return (
+    <div className='character-card' onClick={togglePlanet}>
+        <h3 className='character-name'>{character.name}</h3>
+      {showPlanetInfo && (
+         <p>Planet: 
+        <span className='character-planet'> {planet.name}</span>
+         </p>
+      )}
     </div>
-    <p>
-    {showPlanetInfo && (
-      <span className='character-planet'>
-        <p>Planet: {character.homeworld}</p>
-      </span>
-)}
-</p>
-  
-  </div>
-);
+  );
 }
 
-export default Character
+export default Character;
+
